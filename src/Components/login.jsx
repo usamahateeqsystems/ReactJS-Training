@@ -6,9 +6,11 @@ function Login({ loginUser }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showErrorAlert, setShowErrorAlert] = useState("");
+  const [retries, setRetries] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if(username.length == 0) {
       showErrorMessageAlert('Username is empty');
       return;
@@ -17,8 +19,21 @@ function Login({ loginUser }) {
       showErrorMessageAlert('Password is empty.');
       return;
     }
+    if (username in retries && retries[username] >= 3)
+    {
+      showErrorMessageAlert(username + ' is blocked');
+      return ;
+    }
     if (loginUser(username, password) == false)
     {
+      if (username in retries)
+      {
+        retries[username] += 1;
+      }
+      else{
+        retries[username] = 1;
+      }
+      setRetries(retries);
       showErrorMessageAlert('Username / Password is incorrect');
       return;
     }

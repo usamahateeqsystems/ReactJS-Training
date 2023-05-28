@@ -6,24 +6,20 @@ function CryptoMain(){
     const userList = [
         {
             username: "admin",
-            password: "myPass",
-            address: "myaddress",
-            email: "myemail",
+            password: "admin",
+            address: "admin",
+            email: "admin@admin.com",
             cnic: "myfile",
     
         }
     ];
-    
+
     const [users, setUsers] = useState(userList);
     
     const handleAddUser = (user) => {
         for (const [key, value] of Object.entries(users)) {
-            console.log(value.username);
-            console.log(user.username);
             if (value["username"] == user["username"])
             {
-                console.log(user.username);
-                console.log(value["username"]);
                 return false;
             }
         }
@@ -43,8 +39,8 @@ function CryptoMain(){
 
     return (
         <>
-        {/* <SignUp createUser={handleAddUser}/> */}
-        <Login loginUser={handleLoginUser}/>
+        {/* <SignUp createUser={handleAddUser} /> */}
+        <Login loginUser={handleLoginUser} />
         </>
     );
 }
