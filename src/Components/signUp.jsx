@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
 
-function SignUp(props) {
+function SignUp({ createUser }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -11,7 +11,7 @@ function SignUp(props) {
   const [cnicDocument, setCNICDocument] = useState("");
   const [showErrorAlert, setShowErrorAlert] = useState("");
 
-  const handleSubmit = ({ createUser }) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if(username.length == 0) {
       showErrorMessageAlert('Username is empty');
@@ -31,9 +31,14 @@ function SignUp(props) {
     }
     if (validateEmail() == false)
     {
+      showErrorMessageAlert("You have entered an invalid email address!");
       return ;
     }
-    createUser({ username, password, address,email, cnic: cnicDocument });
+    if (createUser({ username, password, address,email, cnic: cnicDocument }) == false)
+    {
+      showErrorMessageAlert('Username already exists');
+      return ;
+    }
   };
 
   const validateEmail = ()  => {
@@ -41,7 +46,6 @@ function SignUp(props) {
     {
       return (true)
     }
-      showErrorMessageAlert("You have entered an invalid email address!");
       return (false);
   }
 
@@ -59,7 +63,6 @@ function SignUp(props) {
         {showErrorAlert && (
           <Alert
             variant="danger"
-            onClose={() => setShowAlert(false)}
             dismissible
           >
             {showErrorAlert}
