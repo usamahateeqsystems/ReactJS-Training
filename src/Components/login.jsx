@@ -6,6 +6,7 @@ function Login({ loginUser }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showErrorAlert, setShowErrorAlert] = useState("");
+  const [showAlert, setShowAlert] = useState("");
   const [retries, setRetries] = useState({});
 
   const handleSubmit = (e) => {
@@ -37,7 +38,18 @@ function Login({ loginUser }) {
       showErrorMessageAlert('Username / Password is incorrect');
       return;
     }
+    else{
+      showSuccessAlert(username + " logged in successfully");
+    }
   };
+
+  const showSuccessAlert = (message) => {
+    setShowAlert(message);
+    setTimeout(() => {
+      setShowAlert('');
+    }, 3000);
+  };
+
 
   const showErrorMessageAlert = (message) => {
     setShowErrorAlert(message);
@@ -58,6 +70,15 @@ function Login({ loginUser }) {
             {showErrorAlert}
           </Alert>
         )}
+        {showAlert && (
+          <Alert
+            variant="success"
+            dismissible
+          >
+            {showAlert}
+          </Alert>
+        )}
+
         <div className="Control">
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="username">
