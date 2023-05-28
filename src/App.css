@@ -40,3 +40,8 @@
 .Control{
   text-align: left;
 }
+
+.Footer{
+  bottom: 0;
+  width:100%;
+}

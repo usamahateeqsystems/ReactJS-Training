@@ -1,13 +1,14 @@
 import SignUp from "./signUp";
 import Login from "./login";
-import Header from "./header"
+import Header from "./header";
+import Footer from "./footer";
 import React, { useState } from "react"
 
 function CryptoMain(){
 
     const userList = [
         {
-            username: "admin",
+            name: "admin",
             password: "admin",
             address: "admin",
             email: "admin@admin.com",
@@ -17,11 +18,11 @@ function CryptoMain(){
     ];
 
     const [users, setUsers] = useState(userList);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userStatus, setUserStatus] = useState("signin");
     
     const handleAddUser = (user) => {
         for (const [key, value] of Object.entries(users)) {
-            if (value["username"] == user["username"])
+            if (value["email"] == user["email"])
             {
                 return false;
             }
@@ -30,11 +31,20 @@ function CryptoMain(){
         return true;
     }
 
-    const handleLoginUser = (user, password) => {
+    const handlerLogout = () => {
+        setUserStatus("signin");
+    }
+
+    const handlerLogin = () => {
+        setUserStatus("login");
+    }
+
+
+    const handleLoginUser = (email, password) => {
         for (const [key, value] of Object.entries(users)) {
-            if (value["username"] == user && value["password"] == password)
+            if (value["email"] == email && value["password"] == password)
             {
-                setIsLoggedIn(true);
+                setUserStatus("logged");
                 return true;
             }
         }
@@ -43,9 +53,10 @@ function CryptoMain(){
 
     return (
         <>
-        <Header isLoggedIn={isLoggedIn}/>
-        {/* <SignUp createUser={handleAddUser} /> */}
-        <Login loginUser={handleLoginUser} />
+        <Header userStatus={userStatus} handlerLogout={handlerLogout} handlerLogin={handlerLogin} />
+        <SignUp createUser={handleAddUser} userStatus={userStatus}/>
+        <Login loginUser={handleLoginUser} userStatus={userStatus}/>
+        <Footer />
         </>
     );
 }

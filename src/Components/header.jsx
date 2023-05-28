@@ -4,8 +4,8 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
 function Header(props) {
-
-  if (props.isLoggedIn)
+  
+  if (props.userStatus == "logged")
   {
     return (
       <Navbar bg="light" expand="lg">
@@ -19,7 +19,7 @@ function Header(props) {
               navbarScroll
             >
               <Nav.Link href="#dashboard">Dashboard</Nav.Link>
-              <Nav.Link href="#logout">Logout</Nav.Link>
+              <Nav.Link href="#logout" onClick={props.handlerLogout}>Logout</Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -39,7 +39,7 @@ else{
             navbarScroll
           >
             <Nav.Link href="#Home">Home</Nav.Link>
-            <Nav.Link href="#login">Login</Nav.Link>
+            <Nav.Link href="#login" onClick={props.handlerLogin}>Login</Nav.Link>
             <Nav.Link href="#aboutus">About Us</Nav.Link>
           </Nav>
         </Navbar.Collapse>
