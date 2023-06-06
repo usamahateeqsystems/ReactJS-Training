@@ -9,6 +9,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { Typography } from '@mui/material';
 
 export default function BlogsList() {
 
@@ -29,25 +30,22 @@ export default function BlogsList() {
       renderCell: (params) => {
         const onClick = (e) => {
           e.stopPropagation(); // don't select this row after clicking
+
+          setBlogTitle(params.row.blogTitle);
+          setBlogSubTitle(params.row.blogSubTitle);
+          setBlogAuthor(params.row.blogAuthor);
+          setBlogId(params.row.blogId);
+      
+          setOpenView(true);
   
-          const api: GridApi = params.api;
-          const thisRow: Record<string, GridCellValue> = {};
-  
-          api
-            .getAllColumns()
-            .filter((c) => c.field !== "__check__" && !!c)
-            .forEach(
-              (c) => (thisRow[c.field] = params.getValue(params.id, c.field))
-            );
-  
-          return alert(JSON.stringify(thisRow, null, 4));
         };
+        
   
         return (
           <Stack spacing={2} direction="row">
             <Button onClick={onClick} color="info" variant="contained">View</Button>
-            <Button onClick={onClick} color="success" variant="contained">Edit</Button>
-            <Button onClick={onClick} color="error" variant="contained">Delete</Button>
+            <Button color="success" variant="contained">Edit</Button>
+            <Button color="error" variant="contained">Delete</Button>
           </Stack>
         );
       }
@@ -61,13 +59,33 @@ export default function BlogsList() {
   ];
 
   const [open, setOpen] = React.useState(false);
+  const [openView, setOpenView] = React.useState(false);
   const [blogs, setBlogs] = React.useState(rowsList);
+  const [blogTitle, setBlogTitle] = React.useState('');
+  const [blogSubTitle, setBlogSubTitle] = React.useState('');
+  const [blogAuthor, setBlogAuthor] = React.useState('');
+  const [blogId, setBlogId] = React.useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
+  const handleCloseView = () => {
+    setOpenView(false);
+    
+    setBlogTitle('');
+    setBlogSubTitle('');
+    setBlogAuthor('');
+    setBlogId('');
+
+  }
+
   const handleClose = () => {
+    setBlogTitle('');
+    setBlogSubTitle('');
+    setBlogAuthor('');
+    setBlogId('');
+
     setOpen(false);
   };
 
@@ -105,6 +123,7 @@ export default function BlogsList() {
           type="text"
           fullWidth
           variant="standard"
+          value={blogTitle}
         />
         <TextField
           autoFocus
@@ -114,6 +133,7 @@ export default function BlogsList() {
           type="text"
           fullWidth
           variant="standard"
+          value={blogSubTitle}
         />
         <TextField
           autoFocus
@@ -123,11 +143,26 @@ export default function BlogsList() {
           type="text"
           fullWidth
           variant="standard"
+          value={blogAuthor}
         />
       </DialogContent>
       <DialogActions>
         <Button variant='outlined' onClick={handleClose}>Cancel</Button>
         <Button variant='contained' onClick={handleAdd}>Add</Button>
+      </DialogActions>
+    </Dialog>
+    <Dialog open={openView} onClose={handleCloseView}>
+      <DialogTitle>{blogTitle}</DialogTitle>
+      <DialogContent>
+        <Typography gutterBottom>
+          {blogSubTitle}
+        </Typography>
+        <DialogContentText>
+          By {blogAuthor}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button variant='outlined' onClick={handleCloseView}>Close</Button>
       </DialogActions>
     </Dialog>
     </div>
