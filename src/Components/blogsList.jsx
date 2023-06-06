@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid, GridColDef, GridApi, GridCellValue } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack'
 
@@ -10,6 +10,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Typography } from '@mui/material';
+import { useRef } from 'react';
+
 
 export default function BlogsList() {
 
@@ -29,13 +31,12 @@ export default function BlogsList() {
       sortable:false,
       renderCell: (params) => {
         const onClick = (e) => {
-          e.stopPropagation(); // don't select this row after clicking
 
+          e.stopPropagation(); // don't select this row after clicking
           setBlogTitle(params.row.blogTitle);
           setBlogSubTitle(params.row.blogSubTitle);
           setBlogAuthor(params.row.blogAuthor);
-          setBlogId(params.row.blogId);
-      
+          setBlogId(params.row.id);
           setOpenView(true);
   
         };
@@ -49,12 +50,21 @@ export default function BlogsList() {
 
           setDelConfirmView(true);
         };
-        
-  
+
+        const onEditClick = (e) => {
+          e.preventDefault();
+          setBlogTitle(params.row.blogTitle);
+          setBlogSubTitle(params.row.blogSubTitle);
+          setBlogAuthor(params.row.blogAuthor);
+          setBlogId(params.row.id);
+          setOpen(true);
+      
+        }
+
         return (
           <Stack spacing={2} direction="row">
             <Button onClick={onClick} color="info" variant="contained">View</Button>
-            <Button color="success" variant="contained">Edit</Button>
+            <Button onClick={onEditClick} color="success" variant="contained">Edit</Button>
             <Button onClick={onDelClick} color="error" variant="contained">Delete</Button>
           </Stack>
         );
@@ -112,13 +122,31 @@ export default function BlogsList() {
 
   const handleAdd = (e) => {
     e.preventDefault();
-    const blogItem = {
-      id: blogs.length + 1,
-      blogTitle: title.value,
-      blogSubTitle: subtitle.value,
-      blogAuthor: author.value
+    if (blogId === ''){
+      const blogItem = {
+        id: blogs.length + 1,
+        blogTitle: title.value,
+        blogSubTitle: subtitle.value,
+        blogAuthor: author.value
+      }
+      setBlogs([...blogs, blogItem]);
     }
-    setBlogs([...blogs, blogItem]);
+    else
+    {
+      const idx = blogs.findIndex(({ id }) => id === blogId);
+      if (idx)
+      {
+        blogs[idx]['blogTitle'] = title.value;
+        blogs[idx]['blogSubTitle'] = subtitle.value;
+        blogs[idx]['blogAuthor'] = author.value;
+      }
+      setBlogs(blogs);
+    }
+    setBlogTitle('');
+    setBlogSubTitle('');
+    setBlogAuthor('');
+    setBlogId('');
+
     setOpen(false);
     return true;
   };
@@ -172,7 +200,7 @@ export default function BlogsList() {
       </DialogContent>
       <DialogActions>
         <Button variant='outlined' onClick={handleClose}>Cancel</Button>
-        <Button variant='contained' onClick={handleAdd}>Add</Button>
+        <Button variant='contained' onClick={handleAdd}>{blogId && (<div>Update</div>)}{!blogId && (<div>Add</div>)}</Button>
       </DialogActions>
     </Dialog>
     <Dialog open={openView} onClose={handleCloseView}>
