@@ -24,7 +24,7 @@ export default function BlogsList() {
     {
       field: 'action',
       headerName: 'Action',
-      width: 300,
+      width: 500,
       sortable:false,
       renderCell: (params) => {
         const onClick = (e) => {
@@ -45,9 +45,9 @@ export default function BlogsList() {
   
         return (
           <Stack spacing={2} direction="row">
-            <Button onClick={onClick} variant="contained">View</Button>
-            <Button onClick={onClick} variant="contained">Edit</Button>
-            <Button onClick={onClick} variant="contained">Delete</Button>  
+            <Button onClick={onClick} color="info" variant="contained">View</Button>
+            <Button onClick={onClick} color="success" variant="contained">Edit</Button>
+            <Button onClick={onClick} color="error" variant="contained">Delete</Button>
           </Stack>
         );
       }
@@ -86,7 +86,7 @@ export default function BlogsList() {
 
   return (
     <div style={{ height: '100%', width: '100%' }}>
-      <div style={{textAlign:'left'}}><Button onClick={handleClickOpen} variant="outlined">+</Button></div>
+      <div style={{textAlign:'left'}}><Button onClick={handleClickOpen} variant="contained">+</Button></div>
       <DataGrid
         rows={blogs}
         columns={columns}
