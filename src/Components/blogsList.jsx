@@ -144,6 +144,7 @@ export default function BlogsList() {
           type="text"
           fullWidth
           variant="standard"
+          onChange={(e) => (setBlogTitle(e.target.value))}
           value={blogTitle}
         />
         <TextField
@@ -154,6 +155,7 @@ export default function BlogsList() {
           type="text"
           fullWidth
           variant="standard"
+          onChange={(e) => (setBlogSubTitle(e.target.value))}
           value={blogSubTitle}
         />
         <TextField
@@ -164,6 +166,7 @@ export default function BlogsList() {
           type="text"
           fullWidth
           variant="standard"
+          onChange={(e) => (setBlogAuthor(e.target.value))}
           value={blogAuthor}
         />
       </DialogContent>
