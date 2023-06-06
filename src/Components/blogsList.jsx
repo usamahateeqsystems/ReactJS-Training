@@ -41,6 +41,7 @@ export default function BlogsList() {
         };
 
         const onDelClick = (e) => {
+          e.stopPropagation();
           setBlogTitle(params.row.blogTitle);
           setBlogSubTitle(params.row.blogSubTitle);
           setBlogAuthor(params.row.blogAuthor);
