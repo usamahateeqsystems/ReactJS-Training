@@ -39,13 +39,22 @@ export default function BlogsList() {
           setOpenView(true);
   
         };
+
+        const onDelClick = (e) => {
+          setBlogTitle(params.row.blogTitle);
+          setBlogSubTitle(params.row.blogSubTitle);
+          setBlogAuthor(params.row.blogAuthor);
+          setBlogId(params.row.id);
+
+          setDelConfirmView(true);
+        };
         
   
         return (
           <Stack spacing={2} direction="row">
             <Button onClick={onClick} color="info" variant="contained">View</Button>
             <Button color="success" variant="contained">Edit</Button>
-            <Button color="error" variant="contained">Delete</Button>
+            <Button onClick={onDelClick} color="error" variant="contained">Delete</Button>
           </Stack>
         );
       }
@@ -60,6 +69,7 @@ export default function BlogsList() {
 
   const [open, setOpen] = React.useState(false);
   const [openView, setOpenView] = React.useState(false);
+  const [delConfirmView, setDelConfirmView] = React.useState(false);
   const [blogs, setBlogs] = React.useState(rowsList);
   const [blogTitle, setBlogTitle] = React.useState('');
   const [blogSubTitle, setBlogSubTitle] = React.useState('');
@@ -72,7 +82,7 @@ export default function BlogsList() {
 
   const handleCloseView = () => {
     setOpenView(false);
-    
+
     setBlogTitle('');
     setBlogSubTitle('');
     setBlogAuthor('');
@@ -88,6 +98,16 @@ export default function BlogsList() {
 
     setOpen(false);
   };
+
+  const handleDelClose = () => {
+    setDelConfirmView(false);
+  }
+
+  const handleDelConfirm = () => {
+    const newData = blogs?.filter((item) => item.id !== blogId)
+    setBlogs(newData)
+    setDelConfirmView(false);
+  }
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -165,6 +185,27 @@ export default function BlogsList() {
         <Button variant='outlined' onClick={handleCloseView}>Close</Button>
       </DialogActions>
     </Dialog>
+    <Dialog
+        open={delConfirmView}
+        onClose={handleDelClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Confirm Deletion?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete blog ?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDelClose}>No</Button>
+          <Button onClick={handleDelConfirm} autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
