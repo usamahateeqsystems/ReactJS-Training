@@ -8,6 +8,7 @@ import React, { useState } from "react"
 import Home from './home';
 import AboutUs from './aboutUs';
 import BlogsList from './blogsList'
+import Dashboard from './dashboard'
 
 
 function CryptoMain(){
@@ -58,6 +59,7 @@ function CryptoMain(){
             <Route path="/signUp" element={<SignUp createUser={handleAddUser} userStatus={"signin"}/>}/>
             <Route path="/login" element={<Login loginUser={handleLoginUser} userStatus={"login"}/>}/>
             <Route path="/blogs" element={<BlogsList />}/>
+            <Route path="/dashboard" element={<Dashboard />}/>
         </Routes>
         </BrowserRouter>
         <Footer />
