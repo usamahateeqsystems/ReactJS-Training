@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
+import { useNavigate } from "react-router-dom";
 
 function SignUp(props) {
   const [name, setName] = useState("");
@@ -11,6 +12,7 @@ function SignUp(props) {
   const [cnicDocument, setCNICDocument] = useState("");
   const [showAlert, setShowAlert] = useState("");
   const [showErrorAlert, setShowErrorAlert] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,6 +44,9 @@ function SignUp(props) {
     }
     else{
       showSuccessAlert(email + " created successfully");
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
     }
   };
 

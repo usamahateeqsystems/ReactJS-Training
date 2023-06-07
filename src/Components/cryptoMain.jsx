@@ -1,8 +1,14 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import SignUp from "./signUp";
 import Login from "./login";
-import Header from "./header";
+import Layout from "./layout";
 import Footer from "./footer";
 import React, { useState } from "react"
+import Home from './home';
+import AboutUs from './aboutUs';
+import BlogsList from './blogsList'
+
 
 function CryptoMain(){
 
@@ -31,15 +37,6 @@ function CryptoMain(){
         return true;
     }
 
-    const handlerLogout = () => {
-        setUserStatus("signin");
-    }
-
-    const handlerLogin = () => {
-        setUserStatus("login");
-    }
-
-
     const handleLoginUser = (email, password) => {
         for (const [key, value] of Object.entries(users)) {
             if (value["email"] == email && value["password"] == password)
@@ -53,9 +50,16 @@ function CryptoMain(){
 
     return (
         <>
-        <Header userStatus={userStatus} handlerLogout={handlerLogout} handlerLogin={handlerLogin} />
-        <SignUp createUser={handleAddUser} userStatus={userStatus}/>
-        <Login loginUser={handleLoginUser} userStatus={userStatus}/>
+        <Layout />
+        <BrowserRouter>
+        <Routes>
+            <Route path="/" element={<Home/>}/>
+            <Route path="/about" element={<AboutUs/>}/>
+            <Route path="/signUp" element={<SignUp createUser={handleAddUser} userStatus={"signin"}/>}/>
+            <Route path="/login" element={<Login loginUser={handleLoginUser} userStatus={"login"}/>}/>
+            <Route path="/blogs" element={<BlogsList />}/>
+        </Routes>
+        </BrowserRouter>
         <Footer />
         </>
     );
