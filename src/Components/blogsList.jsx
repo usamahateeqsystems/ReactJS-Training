@@ -10,10 +10,34 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Typography } from '@mui/material';
-import { useRef } from 'react';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
+const validationSchema = yup.object({
+  title: yup
+    .string('Enter Title')
+    .min(8, 'Title must be atleast 8 characters long')
+    .required('Title is required'),
+  subtitle: yup
+    .string('Enter Subtitle')
+    .min(8, 'Subtitle must be atleast 8 characters long')
+    .required('Subtitle'),
+  author: yup
+    .string('Enter Author Name')
+    .min(8, 'Author must be atleast 8 characters long')
+    .required('Author'),
+});
 
 export default function BlogsList() {
+
+  const formik = useFormik({
+    initialValues: {
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      handleAdd();
+    },
+  });
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'Blog ID', width: 70 },
@@ -72,16 +96,10 @@ export default function BlogsList() {
     },
   ];
   
-  const rowsList = [
-    { id:1, blogTitle: 'React Training', blogSubTitle: 'Day 1', blogAuthor: "Wayne Rooney" },
-    { id:2, blogTitle: 'React Training', blogSubTitle: 'Day 2', blogAuthor: "Michael Owen" },
-    { id:3, blogTitle: 'React Training', blogSubTitle: 'Day 3', blogAuthor: "Robin Van Percie" },
-  ];
-
   const [open, setOpen] = React.useState(false);
   const [openView, setOpenView] = React.useState(false);
   const [delConfirmView, setDelConfirmView] = React.useState(false);
-  const [blogs, setBlogs] = React.useState(rowsList);
+  const [blogs, setBlogs] = React.useState([]);
   const [blogTitle, setBlogTitle] = React.useState('');
   const [blogSubTitle, setBlogSubTitle] = React.useState('');
   const [blogAuthor, setBlogAuthor] = React.useState('');
@@ -120,35 +138,34 @@ export default function BlogsList() {
     setDelConfirmView(false);
   }
 
-  const handleAdd = (e) => {
-    e.preventDefault();
-    if (blogId === ''){
-      const blogItem = {
-        id: blogs.length + 1,
-        blogTitle: title.value,
-        blogSubTitle: subtitle.value,
-        blogAuthor: author.value
+  const handleAdd = () => {
+      if (blogId === ''){
+        const blogItem = {
+          id: blogs.length + 1,
+          blogTitle: title.value,
+          blogSubTitle: subtitle.value,
+          blogAuthor: author.value
+        }
+        setBlogs([...blogs, blogItem]);
       }
-      setBlogs([...blogs, blogItem]);
-    }
-    else
-    {
-      const idx = blogs.findIndex(({ id }) => id === blogId);
-      if (idx)
+      else
       {
-        blogs[idx]['blogTitle'] = title.value;
-        blogs[idx]['blogSubTitle'] = subtitle.value;
-        blogs[idx]['blogAuthor'] = author.value;
+        const idx = blogs.findIndex(({ id }) => id === blogId);
+        if (idx)
+        {
+          blogs[idx]['blogTitle'] = title.value;
+          blogs[idx]['blogSubTitle'] = subtitle.value;
+          blogs[idx]['blogAuthor'] = author.value;
+        }
+        setBlogs(blogs);
       }
-      setBlogs(blogs);
-    }
-    setBlogTitle('');
-    setBlogSubTitle('');
-    setBlogAuthor('');
-    setBlogId('');
-
-    setOpen(false);
-    return true;
+      setBlogTitle('');
+      setBlogSubTitle('');
+      setBlogAuthor('');
+      setBlogId('');
+  
+      setOpen(false);
+      return true;
   };
 
   return (
@@ -159,6 +176,7 @@ export default function BlogsList() {
         columns={columns}
       />
       <Dialog open={open} onClose={handleClose}>
+      <form onSubmit={formik.handleSubmit}>
       <DialogTitle>Add Blog</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -172,8 +190,10 @@ export default function BlogsList() {
           type="text"
           fullWidth
           variant="standard"
-          onChange={(e) => (setBlogTitle(e.target.value))}
-          value={blogTitle}
+          onChange={formik.handleChange}
+          value={formik.values.title || blogTitle}
+          error={formik.touched.title && Boolean(formik.errors.title)}
+          helperText={formik.touched.title && formik.errors.title}
         />
         <TextField
           autoFocus
@@ -183,8 +203,11 @@ export default function BlogsList() {
           type="text"
           fullWidth
           variant="standard"
-          onChange={(e) => (setBlogSubTitle(e.target.value))}
-          value={blogSubTitle}
+          onChange={formik.handleChange}
+          value={formik.values.subtitle || blogSubTitle}
+          error={formik.touched.subtitle && Boolean(formik.errors.subtitle)}
+          helperText={formik.touched.subtitle && formik.errors.subtitle}
+
         />
         <TextField
           autoFocus
@@ -194,14 +217,22 @@ export default function BlogsList() {
           type="text"
           fullWidth
           variant="standard"
-          onChange={(e) => (setBlogAuthor(e.target.value))}
-          value={blogAuthor}
+          onChange={formik.handleChange}
+          value={formik.values.author || blogAuthor}
+          error={formik.touched.author && Boolean(formik.errors.author)}
+          helperText={formik.touched.author && formik.errors.author}
+
         />
       </DialogContent>
       <DialogActions>
         <Button variant='outlined' onClick={handleClose}>Cancel</Button>
-        <Button variant='contained' onClick={handleAdd}>{blogId && (<div>Update</div>)}{!blogId && (<div>Add</div>)}</Button>
+        <Button variant='contained' type="submit">{
+          blogId && (<div>Update</div>)
+        }{
+        !blogId && (<div>Add</div>)
+        }</Button>
       </DialogActions>
+      </form>
     </Dialog>
     <Dialog open={openView} onClose={handleCloseView}>
       <DialogTitle>{blogTitle}</DialogTitle>
