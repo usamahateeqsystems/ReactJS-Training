@@ -50,7 +50,7 @@ function CryptoMain(){
 
     return (
         <>
-        <Layout />
+        <Layout userStatus={userStatus}/>
         <BrowserRouter>
         <Routes>
             <Route path="/" element={<Home/>}/>
