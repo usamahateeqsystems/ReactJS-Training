@@ -22,6 +22,9 @@ export default function Layout(props){
                 <li className="nav-item">
                     <a className="nav-link" href="/about">About Us</a>
                 </li>
+                <li className="nav-item active">
+                    <a className="nav-link" href="/dashboard">Dashboard</a>
+                </li>
                 </ul>
             </div>
             </nav>
