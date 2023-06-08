@@ -3,6 +3,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { useSelector } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 
 export default function DashboardContainer() {
 
@@ -30,7 +31,7 @@ export default function DashboardContainer() {
       renderCell: (params) => {
         const onClick = (e) => {
 
-          e.stopPropagation(); // don't select this row after clicking
+          useNavigate('/updateCoin');
 
         };
 

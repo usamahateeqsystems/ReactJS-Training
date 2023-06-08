@@ -9,6 +9,7 @@ import Home from './home';
 import AboutUs from './aboutUs';
 import BlogsList from './blogsList'
 import Dashboard from './dashboard'
+import UpdateCoins from "./updateCoins";
 
 
 function CryptoMain(){
@@ -60,6 +61,7 @@ function CryptoMain(){
             <Route path="/login" element={<Login loginUser={handleLoginUser} userStatus={"login"}/>}/>
             <Route path="/blogs" element={<BlogsList />}/>
             <Route path="/dashboard" element={<Dashboard />}/>
+            <Route path="/updateCoin" element={<UpdateCoins />}/>
         </Routes>
         </BrowserRouter>
         <Footer />

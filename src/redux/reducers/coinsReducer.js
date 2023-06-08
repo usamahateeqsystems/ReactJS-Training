@@ -74,8 +74,19 @@ const initialState = {
 const coinsReducer = (state = initialState, action) =>
 {
     switch (action.type){
-        default:
-          return state;
+      case ("UPDATE_COIN"):
+        const updatedCoins = JSON.parse(JSON.stringify([...state.userCoins]));
+        const idx = updatedCoins.findIndex(({ id }) => id === action.payload?.coinRecord.id);
+        if (idx)
+        {
+          updatedCoins[idx].amount = parseInt(action.payload?.coinRecord.amount);
+        }
+        return {
+          ...state,
+          userCoins:updatedCoins,
+        };
+      default:
+        return state;
     }
 }
 
