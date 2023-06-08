@@ -9,6 +9,7 @@ export default function DashboardContainer() {
 
   const [coins, setCoins] = React.useState([]);
   const coinsData = useSelector((state) => state.coins.userCoins);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     setCoins(coinsData);
@@ -30,9 +31,8 @@ export default function DashboardContainer() {
       sortable:false,
       renderCell: (params) => {
         const onClick = (e) => {
-
-          useNavigate('/updateCoin');
-
+          const coinId = params.row.id;
+          navigate('/updateCoin?coinId=' + coinId);
         };
 
         return (
