@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import ratesReducer from './reducers/ratesReducer';
+import coinsReducer from './reducers/coinsReducer';
+
 
 const store = configureStore({
   reducer: {
-    rates: ratesReducer,
+    coins: coinsReducer,
   }
 });
 
