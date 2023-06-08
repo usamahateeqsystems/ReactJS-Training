@@ -3,272 +3,109 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack'
 
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { Typography } from '@mui/material';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
 
-const validationSchema = yup.object({
-  title: yup
-    .string('Enter Title')
-    .min(8, 'Title must be atleast 8 characters long')
-    .required('Title is required'),
-  subtitle: yup
-    .string('Enter Subtitle')
-    .min(8, 'Subtitle must be atleast 8 characters long')
-    .required('Subtitle'),
-  author: yup
-    .string('Enter Author Name')
-    .min(8, 'Author must be atleast 8 characters long')
-    .required('Author'),
-});
 
 export default function Dashboard() {
 
-  const formik = useFormik({
-    initialValues: {
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      handleAdd();
-    },
-  });
-
-  const columns: GridColDef[] = [
-    { field: 'id', headerName: 'Blog ID', width: 70 },
-    { field: 'blogTitle', headerName: 'Title', width: 200 },
-    { field: 'blogSubTitle', headerName: 'Sub Title', width: 200 },
+  const userCoins =
     {
-      field: 'blogAuthor',
-      headerName: 'Author',
-      width: 160,
-    },
-    {
-      field: 'action',
-      headerName: 'Action',
-      width: 500,
-      sortable:false,
-      renderCell: (params) => {
-        const onClick = (e) => {
+      "ABC":87,
+      "ACP":45,
+      "ACT":23,
+      "ACT*":78,
+      "ADA":12,
+      "ADCN":45,
+      "ADL":12,
+      "ADX":34,
+      "ADZ":40
+    }
 
-          e.stopPropagation(); // don't select this row after clicking
-          setBlogTitle(params.row.blogTitle);
-          setBlogSubTitle(params.row.blogSubTitle);
-          setBlogAuthor(params.row.blogAuthor);
-          setBlogId(params.row.id);
-          setOpenView(true);
-  
-        };
+    const coinRates = {
+      "611": 0.389165,
+      "ABC": 59.99,
+      "ACP": 0.014931,
+      "ACT": 0.15927,
+      "ACT*": 0.14371,
+      "ADA": 0.160502,
+      "ADCN": 0.001406,
+      "ADL": 121.5,
+      "ADX": 0.427854,
+      "ADZ": 0.02908,
+      "AE": 2.551479,
+      "AGI": 0.12555,
+      "AIB": 0.005626,
+      "AIDOC": 0.02605
+    }
 
-        const onDelClick = (e) => {
-          e.stopPropagation();
-          setBlogTitle(params.row.blogTitle);
-          setBlogSubTitle(params.row.blogSubTitle);
-          setBlogAuthor(params.row.blogAuthor);
-          setBlogId(params.row.id);
-
-          setDelConfirmView(true);
-        };
-
-        const onEditClick = (e) => {
-          e.preventDefault();
-          setBlogTitle(params.row.blogTitle);
-          setBlogSubTitle(params.row.blogSubTitle);
-          setBlogAuthor(params.row.blogAuthor);
-          setBlogId(params.row.id);
-          setOpen(true);
-      
-        }
-
-        return (
-          <Stack spacing={2} direction="row">
-            <Button onClick={onClick} color="info" variant="contained">View</Button>
-            <Button onClick={onEditClick} color="success" variant="contained">Edit</Button>
-            <Button onClick={onDelClick} color="error" variant="contained">Delete</Button>
-          </Stack>
-        );
-      }
-    },
-  ];
-  
-  const [open, setOpen] = React.useState(false);
-  const [openView, setOpenView] = React.useState(false);
-  const [delConfirmView, setDelConfirmView] = React.useState(false);
-  const [blogs, setBlogs] = React.useState([]);
-  const [blogTitle, setBlogTitle] = React.useState('');
-  const [blogSubTitle, setBlogSubTitle] = React.useState('');
-  const [blogAuthor, setBlogAuthor] = React.useState('');
-  const [blogId, setBlogId] = React.useState('');
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleCloseView = () => {
-    setOpenView(false);
-
-    setBlogTitle('');
-    setBlogSubTitle('');
-    setBlogAuthor('');
-    setBlogId('');
-
-  }
-
-  const handleClose = () => {
-    setBlogTitle('');
-    setBlogSubTitle('');
-    setBlogAuthor('');
-    setBlogId('');
-
-    setOpen(false);
-  };
-
-  const handleDelClose = () => {
-    setDelConfirmView(false);
-  }
-
-  const handleDelConfirm = () => {
-    const newData = blogs?.filter((item) => item.id !== blogId)
-    setBlogs(newData)
-    setDelConfirmView(false);
-  }
-
-  const handleAdd = () => {
-      if (blogId === ''){
-        const blogItem = {
-          id: blogs.length + 1,
-          blogTitle: title.value,
-          blogSubTitle: subtitle.value,
-          blogAuthor: author.value
-        }
-        setBlogs([...blogs, blogItem]);
-      }
-      else
+    const columns: GridColDef[] = [
+      { field: 'id', headerName: 'Coin ID', width: 70 },
+      { field: 'coin', headerName: 'Name', width: 200 },
+      { field: 'amount', headerName: 'Amount', width: 200 },
       {
-        const idx = blogs.findIndex(({ id }) => id === blogId);
-        if (idx)
-        {
-          blogs[idx]['blogTitle'] = title.value;
-          blogs[idx]['blogSubTitle'] = subtitle.value;
-          blogs[idx]['blogAuthor'] = author.value;
-        }
-        setBlogs(blogs);
-      }
-      setBlogTitle('');
-      setBlogSubTitle('');
-      setBlogAuthor('');
-      setBlogId('');
+        field: 'rate',
+        headerName: 'Coin Rate',
+        width: 160,
+      },
+      {
+        field: 'action',
+        headerName: 'Action',
+        width: 500,
+        sortable:false,
+        renderCell: (params) => {
+          const onClick = (e) => {
   
-      setOpen(false);
-      return true;
-  };
+            e.stopPropagation(); // don't select this row after clicking
+
+          };
+  
+          return (
+            <Stack direction="row">
+              <Button onClick={onClick} color="info" variant="contained">Transfer</Button>
+            </Stack>
+          );
+        }
+      },
+    ];
+
+  const [coins, setCoins] = React.useState([]);
+
+  React.useEffect(() => {
+
+    const updateCoins = (pUserCoins, pCoinRates) => {
+      const coinsData = [];
+      let count = 1;
+      for (const [key, value] of Object.entries(pUserCoins)) {
+        coinsData.push(
+          {
+            "id": count++,
+            "coin": key,
+            "amount": value,
+            "rate": pCoinRates[key]
+          }
+        )
+      }
+      return coinsData;
+    }
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://api.coinlayer.com/live?access_key=37bca8e35e16cac55bdd0a850816e642');
+        const data = await response.json();
+        setCoins(updateCoins(userCoins, data.rates || coinRates));
+      } catch (error)
+      {
+        console.log('Error', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
-    <div style={{ height: '100%', width: '100%' }}>
-      <div style={{textAlign:'left'}}><Button onClick={handleClickOpen} variant="contained">+</Button></div>
+    <>
       <DataGrid
-        rows={blogs}
+        rows={coins}
         columns={columns}
       />
-      <Dialog open={open} onClose={handleClose}>
-      <form onSubmit={formik.handleSubmit}>
-      <DialogTitle>Add Blog</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          Enter the following details for a blog.
-        </DialogContentText>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="title"
-          label="Title"
-          type="text"
-          fullWidth
-          variant="standard"
-          onChange={formik.handleChange}
-          value={formik.values.title || blogTitle}
-          error={formik.touched.title && Boolean(formik.errors.title)}
-          helperText={formik.touched.title && formik.errors.title}
-        />
-        <TextField
-          autoFocus
-          margin="dense"
-          id="subtitle"
-          label="Subtitle"
-          type="text"
-          fullWidth
-          variant="standard"
-          onChange={formik.handleChange}
-          value={formik.values.subtitle || blogSubTitle}
-          error={formik.touched.subtitle && Boolean(formik.errors.subtitle)}
-          helperText={formik.touched.subtitle && formik.errors.subtitle}
-
-        />
-        <TextField
-          autoFocus
-          margin="dense"
-          id="author"
-          label="Author"
-          type="text"
-          fullWidth
-          variant="standard"
-          onChange={formik.handleChange}
-          value={formik.values.author || blogAuthor}
-          error={formik.touched.author && Boolean(formik.errors.author)}
-          helperText={formik.touched.author && formik.errors.author}
-
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button variant='outlined' onClick={handleClose}>Cancel</Button>
-        <Button variant='contained' type="submit">{
-          blogId && (<div>Update</div>)
-        }{
-        !blogId && (<div>Add</div>)
-        }</Button>
-      </DialogActions>
-      </form>
-    </Dialog>
-    <Dialog open={openView} onClose={handleCloseView}>
-      <DialogTitle>{blogTitle}</DialogTitle>
-      <DialogContent>
-        <Typography gutterBottom>
-          {blogSubTitle}
-        </Typography>
-        <DialogContentText>
-          By {blogAuthor}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button variant='outlined' onClick={handleCloseView}>Close</Button>
-      </DialogActions>
-    </Dialog>
-    <Dialog
-        open={delConfirmView}
-        onClose={handleDelClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Confirm Deletion?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete blog ?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleDelClose}>No</Button>
-          <Button onClick={handleDelConfirm} autoFocus>
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    </>
   );
 }
