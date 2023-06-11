@@ -75,7 +75,6 @@ const coinsReducer = (state = initialState, action) =>
 {
     switch (action.type){
       case ("UPDATE_COIN"):
-        debugger;
         const updatedCoins = JSON.parse(JSON.stringify([...state.userCoins]));
         const idx = updatedCoins.findIndex(({ id }) => id === action.payload?.coinRecord.id);
         if (idx >= 0)

@@ -10,9 +10,17 @@ import AboutUs from './aboutUs';
 import BlogsList from './blogsList'
 import Dashboard from './dashboard'
 import UpdateCoins from "./updateCoins";
-
+import ProtectedRoute from "../ProtectedRoute";
 
 function CryptoMain(){
+
+    const [isLoggedIn, setisLoggedIn] = useState(null);
+    const logIn = () => {
+        setisLoggedIn(true);
+    };
+    const logOut = () => {
+        setisLoggedIn(false);
+    };
 
     const userList = [
         {
@@ -44,6 +52,7 @@ function CryptoMain(){
             if (value["email"] == email && value["password"] == password)
             {
                 setUserStatus("logged");
+                logIn();
                 return true;
             }
         }
@@ -60,7 +69,10 @@ function CryptoMain(){
             <Route path="/signUp" element={<SignUp createUser={handleAddUser} userStatus={"signin"}/>}/>
             <Route path="/login" element={<Login loginUser={handleLoginUser} userStatus={"login"}/>}/>
             <Route path="/blogs" element={<BlogsList />}/>
-            <Route path="/dashboard" element={<Dashboard />}/>
+            <Route path="/dashboard" element={
+            <ProtectedRoute isAllowed={isLoggedIn}>
+                <Dashboard />
+            </ProtectedRoute>}/>
             <Route path="/updateCoin" element={<UpdateCoins />}/>
         </Routes>
         </BrowserRouter>
