@@ -9,6 +9,7 @@ function Login(props) {
   const [showErrorAlert, setShowErrorAlert] = useState("");
   const [showAlert, setShowAlert] = useState("");
   const [retries, setRetries] = useState({});
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,18 +42,17 @@ function Login(props) {
     }
     else{
       showSuccessAlert(email + " logged in successfully");
+      setTimeout(() => {
+        navigate("/dashboard");
+      },3000);
     }
   };
-
-
-  const navigate = useNavigate();
 
   const showSuccessAlert = (message) => {
     setShowAlert(message);
     setTimeout(() => {
       setShowAlert('');
     }, 3000);
-    navigate("/dashboard");
   };
 
 
