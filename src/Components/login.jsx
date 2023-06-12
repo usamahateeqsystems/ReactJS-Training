@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
+import { useNavigate } from "react-router-dom";
 
 function Login(props) {
   const [email, setEmail] = useState("");
@@ -8,6 +9,7 @@ function Login(props) {
   const [showErrorAlert, setShowErrorAlert] = useState("");
   const [showAlert, setShowAlert] = useState("");
   const [retries, setRetries] = useState({});
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,6 +42,9 @@ function Login(props) {
     }
     else{
       showSuccessAlert(email + " logged in successfully");
+      setTimeout(() => {
+        navigate("/dashboard");
+      },3000);
     }
   };
 
