@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
+import { useNavigate } from "react-router-dom";
 
 function Login(props) {
   const [email, setEmail] = useState("");
@@ -43,11 +44,15 @@ function Login(props) {
     }
   };
 
+
+  const navigate = useNavigate();
+
   const showSuccessAlert = (message) => {
     setShowAlert(message);
     setTimeout(() => {
       setShowAlert('');
     }, 3000);
+    navigate("/dashboard");
   };
 
 
